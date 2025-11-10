@@ -21,11 +21,15 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            cd /home/debian/Robots/fivemfrance || mkdir -p /home/debian/Robots/fivemfrance
-            if [ ! -d .git ]; then
-              git clone git@github.com:Fivemfr/fivemfr.git .
-            else
-              git pull origin main
+            cd /home/debian/Robots
+
+            if [ ! -d fivemfrance ]; then
+              git clone git@github.com:Fivemfr/fivemfr.git fivemfrance
             fi
+
+            cd fivemfrance
+            git pull origin main
+
+            # Démarrage du conteneur
             docker compose down || true
             docker compose up -d --build
