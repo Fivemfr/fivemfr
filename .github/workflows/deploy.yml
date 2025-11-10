@@ -22,6 +22,13 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           script: |
             cd /home/debian/Robots/fivemfrance
-            git pull origin main
-            docker compose down
+            if [ ! -d .git ]; then
+              git init
+              git remote add origin git@github.com:Fivemfr/fivemfr.git
+              git fetch origin
+              git checkout -t origin/main
+            else
+              git pull origin main
+            fi
+            docker compose down || true
             docker compose up -d --build
