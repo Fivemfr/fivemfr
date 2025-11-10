@@ -1,0 +1,22 @@
+{
+  "name": "fivemfr-bot",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc -p .",
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "deploy": "ts-node src/deploy-commands.ts"
+  },
+  "dependencies": {
+    "discord.js": "^14.15.3",
+    "dotenv": "^16.4.5",
+    "mysql2": "^3.9.7",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "nodemon": "^3.0.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
