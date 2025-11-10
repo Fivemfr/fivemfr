@@ -28,8 +28,17 @@ jobs:
             fi
 
             cd fivemfrance
-            git pull origin main
+            if [ -d .git ]; then
+              git pull origin main
+            fi
 
-            # Démarrage du conteneur
+            if [ ! -f .env ]; then
+              echo "BOT_TOKEN=changeme" > .env
+              echo "NODE_ENV=production" >> .env
+            fi
+
             docker compose down || true
             docker compose up -d --build
+
+            echo "✅ Deploy complete"
+            docker ps
