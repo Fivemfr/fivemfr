@@ -21,18 +21,15 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            set -e
             cd /home/debian/Robots
-
-            # Si le dossier n'existe pas, on le clone
-            if [ ! -d "fivemfrance/.git" ]; then
-              rm -rf fivemfrance
-              git clone git@github.com:Fivemfr/fivemfr.git fivemfrance
+            if [ ! -d "fivemfr" ]; then
+              git clone git@github.com:Fivemfr/fivemfr.git fivemfr
+            else
+              cd fivemfr
+              git fetch origin main
+              git reset --hard origin/main
             fi
 
-            cd fivemfrance
-            git fetch origin main
-            git reset --hard origin/main
-
-            docker compose down || true
+            cd /home/debian/Robots/fivemfr
             docker compose up -d --build
+
