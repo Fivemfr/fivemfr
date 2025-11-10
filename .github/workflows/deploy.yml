@@ -28,17 +28,16 @@ jobs:
             fi
 
             cd fivemfrance
-            if [ -d .git ]; then
-              git pull origin main
-            fi
+            git pull origin main
 
             if [ ! -f .env ]; then
               echo "BOT_TOKEN=changeme" > .env
               echo "NODE_ENV=production" >> .env
             fi
 
-            docker compose down || true
-            docker compose up -d --build
+            echo "Building and starting container..."
+            docker compose -f /home/debian/Robots/fivemfrance/docker-compose.yml down || true
+            docker compose -f /home/debian/Robots/fivemfrance/docker-compose.yml up -d --build
 
-            echo "✅ Deploy complete"
-            docker ps
+            echo "✅ Déploiement terminé"
+            docker compose -f /home/debian/Robots/fivemfrance/docker-compose.yml ps
