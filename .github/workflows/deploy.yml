@@ -21,23 +21,15 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
           script: |
-            cd /home/debian/Robots
-
-            if [ ! -d fivemfrance ]; then
-              git clone git@github.com:Fivemfr/fivemfr.git fivemfrance
+            cd /home/debian/Robots/fivemfrance
+            if [ ! -d .git ]; then
+              git init
+              git remote add origin git@github.com:MaitreAntho/fivemfr.git
+              git fetch origin main
+              git reset --hard origin/main
+            else
+              git fetch origin main
+              git reset --hard origin/main
             fi
-
-            cd fivemfrance
-            git pull origin main
-
-            if [ ! -f .env ]; then
-              echo "BOT_TOKEN=changeme" > .env
-              echo "NODE_ENV=production" >> .env
-            fi
-
-            echo "Building and starting container..."
-            docker compose -f /home/debian/Robots/fivemfrance/docker-compose.yml down || true
-            docker compose -f /home/debian/Robots/fivemfrance/docker-compose.yml up -d --build
-
-            echo "✅ Déploiement terminé"
-            docker compose -f /home/debian/Robots/fivemfrance/docker-compose.yml ps
+            docker compose down
+            docker compose up -d --build
